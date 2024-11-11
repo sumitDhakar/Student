@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 
 @Component
 public class JWTUtils {
@@ -36,15 +38,29 @@ public class JWTUtils {
 	}
 	
 	public Claims getClaims(String token) {
-		return   Jwts.parser()
+		 try {	return   Jwts.parser()
 				.setSigningKey(secretKey.getBytes())
 				.parseClaimsJws(token)
 				.getBody();
-	}
+	}catch (MalformedJwtException e) {
+        System.err.println("Invalid JWT format: " + e.getMessage());
+    } catch (SignatureException e) {
+        System.err.println("Invalid JWT signature: " + e.getMessage());
+    } catch (Exception e) {
+        System.err.println("Error parsing JWT: " + e.getMessage());
+    }
+    return null;
+}
 	
 	public String getUserName(String token) {
 		
-	   return getClaims(token).getSubject();
-	}
+		Claims claims = getClaims(token);
+        if (claims != null) {
+            return claims.getSubject(); // Access the subject if claims are not null
+        } else {
+            System.err.println("Claims are null; unable to retrieve subject.");
+            return null;
+        }
+    }
 	
 }

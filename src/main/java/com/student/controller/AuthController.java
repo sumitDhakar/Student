@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,15 +28,15 @@ public class AuthController {
 	
 	
 	@PostMapping("{role}")
-	public ResponseEntity<?> createStudent( StudentRequest student,@PathVariable String role) {
-		System.out.println("user");
+	public ResponseEntity<?> createStudent(@RequestBody StudentRequest student,@PathVariable String role) {
+		System.out.println(student);
 		
 		return new ResponseEntity<Student>(this.userServices.createStudent(student,role), HttpStatus.CREATED);
 	}
 	
 	
 	@PostMapping("/signin")
-	public ResponseEntity<?> login( StudentLogin authRequest) {
+	public ResponseEntity<?> login(@RequestBody StudentLogin authRequest) {
 		return new ResponseEntity<AuthResponse>(this.userServices.login(authRequest), HttpStatus.ACCEPTED);
 	}
 

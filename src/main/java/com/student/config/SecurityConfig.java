@@ -52,9 +52,9 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable();
 
-		httpSecurity.authorizeRequests().requestMatchers("/api/auth/**", "/ws/**").permitAll()
+		httpSecurity.authorizeRequests().requestMatchers("/api/auth/**", "/api/students/**").permitAll()
 //		            
-				.requestMatchers("/api/**").hasAnyAuthority("ADMIN", "USER").anyRequest().authenticated().and()
+				.requestMatchers("/ki/**").hasAnyAuthority("ADMIN", "STUDENT","EMPLOYEE").anyRequest().authenticated().and()
 				.exceptionHandling().authenticationEntryPoint(invalidAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

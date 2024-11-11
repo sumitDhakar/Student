@@ -25,20 +25,17 @@ public class Student {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String studentAddress;
-	private String studentNAme;
 	private String email;
-	private Boolean deleted = false;
-		private String Password;
-	
-	private Role studentRole;
-	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	   @JoinColumn(name="u_id")
-@JsonManagedReference
-@EqualsAndHashCode.Exclude
-	   private Set<UserRoles> userRoles;
-	
+	private String studentName;
 
+	private String studentAddress;
+	private Boolean deleted = false;
+	private String Password;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "u_id")
+	@JsonManagedReference
+	@EqualsAndHashCode.Exclude
+	private Set<UserRoles> userRoles;
 
 }

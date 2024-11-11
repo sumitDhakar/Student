@@ -49,6 +49,8 @@ public class StudentServiceImpl implements AuthStudentService,UserDetailsService
 	
 	@Override
 	public Student createStudent(StudentRequest u, String roleId) {
+		
+		System.out.println(roleId);
 		 boolean isPresent = this.studentRepository.existsByEmailAndDeleted(u.getEmail(), false);
 		    if (isPresent) {
 		        throw new ResourcesAlreadyExists("Student with this email already exists: " + u.getEmail());
@@ -67,6 +69,7 @@ public class StudentServiceImpl implements AuthStudentService,UserDetailsService
 		    switch (roleId) {
 		        case "STUDENT":
 		            role.setId(1L);
+		            
 		            break;
 		        case "ADIME":
 		            role.setId(2L);
@@ -118,6 +121,20 @@ public class StudentServiceImpl implements AuthStudentService,UserDetailsService
 				.map(ur -> new SimpleGrantedAuthority(ur.getRoles().getTitle())).collect(Collectors.toList());
 
 		return new org.springframework.security.core.userdetails.User(email, user.getPassword(), authorities);
+	}
+
+
+
+
+	@Override
+	public Student updateuser(StudentRequest request) {
+		Student user = this.studentRepository.findByEmail(request.getEmail())
+				.orElseThrow(() -> new UserNotFoundException(AppConstants.USER_NOT_FOUND_EMAIL ));
+		user.setStudentName(request.getStudentName());
+		user.setStudentAddress(request.getStudentAddress());
+		Student save = this.studentRepository.save(user);
+		
+		  return studentRepository.save(save);
 	}
 
 	

@@ -13,6 +13,7 @@ public class StudentRequest {
 	private Long id;
 	private String email;
 	private String studentName;
+	private String studentAddress;
 
 
 	private String password;
